@@ -1,0 +1,331 @@
+mysql> source c:\my_scripts\psahan_assignment4.sql
+Show warnings enabled.
+--------------
+/*  Assignment 4.sql 
+    Perihan Sahan
+    CS 155A, Fall 2017 */
+ 
+ 
+/* Just copy / paste from mysql command-line to a text editor to do this. */
+
+    
+
+/* Bookstore database used for this assignment. */
+
+USE bookstore
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+/* Query 0 */
+
+SELECT user(), current_date(), version(), @@sql_mode
+--------------
+
+*************************** 1. row ***************************
+        user(): root@localhost
+current_date(): 2017-09-18
+     version(): 5.7.19-log
+    @@sql_mode: STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+1 row in set (0.00 sec)
+
+--------------
+/* Query 1 */
+
+CREATE TABLE computer (
+
+    serial_number INT(7), 
+    make CHAR(2) NOT NULL, 
+    model CHAR(18),
+    processor_type CHAR(13) NOT NULL,
+    memory VARCHAR(12),
+    disk_size VARCHAR(11), 
+    
+    PRIMARY KEY(serial_number) )  ENGINE=INNODB
+--------------
+
+Query OK, 0 rows affected (0.40 sec)
+
+--------------
+DESC computer
+--------------
+
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| serial_number  | int(7)      | NO   | PRI | NULL    |       |
+| make           | char(2)     | NO   |     | NULL    |       |
+| model          | char(18)    | YES  |     | NULL    |       |
+| processor_type | char(13)    | NO   |     | NULL    |       |
+| memory         | varchar(12) | YES  |     | NULL    |       |
+| disk_size      | varchar(11) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Query 2 */
+
+INSERT INTO computer VALUES(
+		9871234, 'HP', 'Pavilion 500-210qe', 'Intel i5-4530', 
+		'6.0 GBytes', '1.0 TBytes')
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+
+--------------
+INSERT INTO computer VALUES(
+		9871245, 'HP', 'Pavilion 500-210qe', 'Intel i5-4530', 
+		'6.0 GBytes', '1.0 TBytes')
+--------------
+
+Query OK, 1 row affected (0.07 sec)
+
+--------------
+INSERT INTO computer VALUES(
+		9871256, 'HP', 'Pavilion 500-210qe', 'Intel i5-4530', 
+		'6.0 GBytes', '1.0 TBytes')
+--------------
+
+Query OK, 1 row affected (0.10 sec)
+
+--------------
+INSERT INTO computer VALUES(
+		9871267, 'HP', 'Pavilion 500-210qe', 'Intel i5-4530', 
+		'6.0 GBytes', '1.0 TBytes')
+--------------
+
+Query OK, 1 row affected (0.10 sec)
+
+--------------
+INSERT INTO computer VALUES(
+		9871278, 'HP', 'Pavilion 500-210qe', 'Intel i5-4530', 
+		'6.0 GBytes', '1.0 TBytes')
+--------------
+
+Query OK, 1 row affected (0.06 sec)
+
+--------------
+DESC computer
+--------------
+
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| serial_number  | int(7)      | NO   | PRI | NULL    |       |
+| make           | char(2)     | NO   |     | NULL    |       |
+| model          | char(18)    | YES  |     | NULL    |       |
+| processor_type | char(13)    | NO   |     | NULL    |       |
+| memory         | varchar(12) | YES  |     | NULL    |       |
+| disk_size      | varchar(11) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Query 3 */
+
+ALTER TABLE computer
+ADD processor_speed DECIMAL(2,1)
+--------------
+
+Query OK, 0 rows affected (0.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+DESC computer
+--------------
+
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| serial_number   | int(7)       | NO   | PRI | NULL    |       |
+| make            | char(2)      | NO   |     | NULL    |       |
+| model           | char(18)     | YES  |     | NULL    |       |
+| processor_type  | char(13)     | NO   |     | NULL    |       |
+| memory          | varchar(12)  | YES  |     | NULL    |       |
+| disk_size       | varchar(11)  | YES  |     | NULL    |       |
+| processor_speed | decimal(2,1) | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+--------------
+/* Query 4 */
+
+SELECT * FROM computer
+--------------
+
++---------------+------+--------------------+----------------+------------+------------+-----------------+
+| serial_number | make | model              | processor_type | memory     | disk_size  | processor_speed |
++---------------+------+--------------------+----------------+------------+------------+-----------------+
+|       9871234 | HP   | Pavilion 500-210qe | Intel i5-4530  | 6.0 GBytes | 1.0 TBytes |            NULL |
+|       9871245 | HP   | Pavilion 500-210qe | Intel i5-4530  | 6.0 GBytes | 1.0 TBytes |            NULL |
+|       9871256 | HP   | Pavilion 500-210qe | Intel i5-4530  | 6.0 GBytes | 1.0 TBytes |            NULL |
+|       9871267 | HP   | Pavilion 500-210qe | Intel i5-4530  | 6.0 GBytes | 1.0 TBytes |            NULL |
+|       9871278 | HP   | Pavilion 500-210qe | Intel i5-4530  | 6.0 GBytes | 1.0 TBytes |            NULL |
++---------------+------+--------------------+----------------+------------+------------+-----------------+
+5 rows in set (0.00 sec)
+
+--------------
+/* Query 5 */
+
+DESC computer
+--------------
+
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| serial_number   | int(7)       | NO   | PRI | NULL    |       |
+| make            | char(2)      | NO   |     | NULL    |       |
+| model           | char(18)     | YES  |     | NULL    |       |
+| processor_type  | char(13)     | NO   |     | NULL    |       |
+| memory          | varchar(12)  | YES  |     | NULL    |       |
+| disk_size       | varchar(11)  | YES  |     | NULL    |       |
+| processor_speed | decimal(2,1) | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+7 rows in set (0.02 sec)
+
+--------------
+/* Query 6 */
+
+ALTER TABLE computer
+DROP COLUMN processor_speed
+--------------
+
+Query OK, 0 rows affected (0.80 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+DESC computer
+--------------
+
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| serial_number  | int(7)      | NO   | PRI | NULL    |       |
+| make           | char(2)     | NO   |     | NULL    |       |
+| model          | char(18)    | YES  |     | NULL    |       |
+| processor_type | char(13)    | NO   |     | NULL    |       |
+| memory         | varchar(12) | YES  |     | NULL    |       |
+| disk_size      | varchar(11) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Query 7 */
+
+RENAME TABLE computer
+  TO computer_backup
+--------------
+
+Query OK, 0 rows affected (0.19 sec)
+
+--------------
+/* Query 8 */
+
+SHOW TABLES
+--------------
+
++---------------------+
+| Tables_in_bookstore |
++---------------------+
+| address             |
+| administrators      |
+| category            |
+| computer_backup     |
+| customer            |
+| employee            |
+| orderitems          |
+| orders              |
+| product             |
+| store               |
+| vendor              |
++---------------------+
+11 rows in set (0.00 sec)
+
+--------------
+/* Query 9 */
+
+DROP TABLE IF EXISTS computer_backup
+--------------
+
+Query OK, 0 rows affected (0.25 sec)
+
+--------------
+SHOW TABLES
+--------------
+
++---------------------+
+| Tables_in_bookstore |
++---------------------+
+| address             |
+| administrators      |
+| category            |
+| customer            |
+| employee            |
+| orderitems          |
+| orders              |
+| product             |
+| store               |
+| vendor              |
++---------------------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Query 10 */
+
+ALTER TABLE employee
+ADD SalaryYearToDate DECIMAL(6,2)
+--------------
+
+Query OK, 0 rows affected (0.93 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+/* Query 11 */
+
+ALTER TABLE employee
+DROP COLUMN SalaryYearToDate
+--------------
+
+Query OK, 0 rows affected (1.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+--------------
+/* Query 12 */
+
+SHOW COLUMNS FROM employee
+--------------
+
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| employee_id | int(4)        | NO   | PRI | NULL    |       |
+| store_id    | varchar(3)    | NO   | MUL | NULL    |       |
+| first_name  | char(25)      | NO   |     | NULL    |       |
+| last_name   | char(25)      | NO   |     | NULL    |       |
+| phone       | char(12)      | YES  |     | NULL    |       |
+| email       | varchar(100)  | NO   | UNI | NULL    |       |
+| salary      | decimal(10,2) | NO   |     | NULL    |       |
+| mgr         | int(4)        | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+--------------
+DESC employee
+--------------
+
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| employee_id | int(4)        | NO   | PRI | NULL    |       |
+| store_id    | varchar(3)    | NO   | MUL | NULL    |       |
+| first_name  | char(25)      | NO   |     | NULL    |       |
+| last_name   | char(25)      | NO   |     | NULL    |       |
+| phone       | char(12)      | YES  |     | NULL    |       |
+| email       | varchar(100)  | NO   | UNI | NULL    |       |
+| salary      | decimal(10,2) | NO   |     | NULL    |       |
+| mgr         | int(4)        | YES  |     | NULL    |       |
++-------------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> notee

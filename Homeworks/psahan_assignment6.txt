@@ -1,0 +1,326 @@
+mysql> source c:\my_scripts\psahan_assignment6.sql
+Show warnings enabled.
+--------------
+/*  Assignment 6.sql 
+    Perihan Sahan
+    CS 155A, Fall 2017 */
+ 
+ 
+/* Just copy / paste from mysql command-line to a text editor to do this. */
+
+    
+
+/* BOOKSTORE database used for this assignment.  */
+
+USE bookstore;
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+/* Query 0 */
+
+SELECT user(), current_date(), version(), @@sql_mode
+--------------
+
+*************************** 1. row ***************************
+        user(): root@localhost
+current_date(): 2017-10-02
+     version(): 5.7.19-log
+    @@sql_mode: STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+1 row in set (0.00 sec)
+
+--------------
+/* Query 1 */
+
+INSERT INTO category ( category_id, category_name )
+  VALUES ( 81, 'Musical Instruments')
+--------------
+
+Query OK, 1 row affected (0.06 sec)
+
+--------------
+SELECT * FROM category
+--------------
+
++-------------+---------------------+
+| category_id | category_name       |
++-------------+---------------------+
+|          41 | Book                |
+|          21 | CD                  |
+|          11 | Computer            |
+|          31 | DVD                 |
+|          81 | Musical Instruments |
+|          61 | printer             |
+|          51 | Video               |
++-------------+---------------------+
+7 rows in set (0.00 sec)
+
+--------------
+/* Query 2 */
+
+UPDATE category
+SET category_name = 'Cameras and Camcorders'
+WHERE category_id = 81
+--------------
+
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+SELECT * FROM category
+--------------
+
++-------------+------------------------+
+| category_id | category_name          |
++-------------+------------------------+
+|          41 | Book                   |
+|          81 | Cameras and Camcorders |
+|          21 | CD                     |
+|          11 | Computer               |
+|          31 | DVD                    |
+|          61 | printer                |
+|          51 | Video                  |
++-------------+------------------------+
+7 rows in set (0.14 sec)
+
+--------------
+/* Query 3 */
+
+INSERT INTO product ( product_id, category_id, product_code, product_name, description, 
+             list_price, discount_percent, date_added, vendor_id )
+  VALUES ( 17234 , 81 , 'Camera640' , 'Canon' , 'Canon EOS Rebel T5 DSLR Camera' ,
+           '755.99' , '0' , '2016-04-30 13:14:15' , 2 )
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+
+--------------
+SELECT * FROM product
+--------------
+
++------------+-------------+--------------+------------------------+---------------------------------------------------------------------------------------------------------------------------------+------------+------------------+---------------------+-----------+
+| product_id | category_id | product_code | product_name           | description                                                                                                                     | list_price | discount_percent | date_added          | vendor_id |
++------------+-------------+--------------+------------------------+---------------------------------------------------------------------------------------------------------------------------------+------------+------------------+---------------------+-----------+
+|       1234 |          11 | comp1230     | Dell XPS 8700          | Dell XPS 8700 Desktop , Intel Core i7, 4GB Graphics                                                                             |     999.00 |            20.00 | 2014-10-30 09:32:40 |         2 |
+|       2234 |          11 | comp3450     | Lenovo H50 Desktop     | Lenovo H50 Desktop , Intel Core i7, 2GB Graphics                                                                                |    1199.00 |            30.00 | 2014-12-05 16:33:13 |         2 |
+|       3234 |          11 | comp1760     | HP Envy 750qe Desktop  | HP Envy 750qe Desktop , Intel Core i7, 4GB Graphics, Windows 10.                                                                |    2517.00 |            52.00 | 2015-02-04 11:04:31 |         2 |
+|       4234 |          11 | lap3450      | Toshiba Satellite S55T | Toshiba Satellite S55T Touchscreen Laptop , Intel Core i7 , 4GB Graphics | 4K Ultra HD.                                         |     989.99 |            20.00 | 2015-06-01 11:12:59 |         2 |
+|       5234 |          11 | lap3423      | HP Pavilion 15t Star   | HP Pavilion 15t Star Wars Special Edition Touchscreen Laptop, Intel Core i7, 1080p, 2GB Graphics, Backlit Keyboard , Windows 10 |    1299.00 |             0.00 | 2015-07-30 13:58:35 |         3 |
+|       6234 |          11 | lap9000      | Dell Inspiron 17 5000  | Dell Inspiron 17 5000 Series Touchscreen Laptop, Intel Core i7, 4GB Graphics, 1080p                                             |    1415.00 |            39.00 | 2015-07-30 14:12:41 |         2 |
+|       7234 |          21 | CD3467       | Classical Music        | The best classical music                                                                                                        |      99.99 |            30.00 | 2015-06-01 11:29:35 |         3 |
+|       8234 |          21 | CD7689       | Pop 3                  | The best popular music                                                                                                          |      49.99 |            25.00 | 2015-07-30 14:18:33 |         5 |
+|       9234 |          51 | video1234    | 2412: The Return       | Aliens return                                                                                                                   |      14.99 |            30.00 | 2015-07-30 12:46:40 |         5 |
+|      10234 |          51 | video4567    | Z Files                | Series on mysterious activities                                                                                                 |      49.99 |            15.00 | 2015-07-30 13:14:15 |         3 |
+|      11234 |          41 | book9907     | Modern Science         | A description of modern science                                                                                                 |      19.95 |            20.00 | 2014-10-30 09:32:40 |         5 |
+|      12234 |          41 | book6789     | Chemistry              | Introduction to Chemistry                                                                                                       |      30.00 |            20.00 | 2013-10-30 09:32:40 |         5 |
+|      13234 |          31 | DVD12356     | Space Force 9          | Adventures of heroes                                                                                                            |      13.95 |            20.00 | 2012-10-30 10:32:50 |         9 |
+|      14234 |          31 | DVD6789      | From Another Planet    | Alien from another planet lands on Earth                                                                                        |      49.99 |            20.00 | 2012-10-30 10:34:30 |         9 |
+|      15234 |          31 | DVD8779      | Supernova              | A star explodes                                                                                                                 |      25.99 |            15.00 | 2011-10-30 10:32:40 |         5 |
+|      16234 |          61 | print2345    | HP Color LaserJet      | HP Color LaserJet Enterprise M553n Printer                                                                                      |     599.00 |            20.00 | 2015-10-30 09:35:20 |         5 |
+|      17234 |          81 | Camera640    | Canon                  | Canon EOS Rebel T5 DSLR Camera                                                                                                  |     755.99 |             0.00 | 2016-04-30 13:14:15 |         2 |
+|      18234 |          61 | print7687    | HP LaserJet Pro        | HP LaserJet Pro M277dw Multifunction Color Printer                                                                              |     200.99 |            20.00 | 2011-10-30 10:34:30 |         5 |
+|      19234 |          61 | print4356    | HP LaserJet Pro        | HP LaserJet Pro M225dw Black and White Multifunction Printer                                                                    |     500.99 |            15.00 | 2012-10-30 10:32:40 |         5 |
++------------+-------------+--------------+------------------------+---------------------------------------------------------------------------------------------------------------------------------+------------+------------------+---------------------+-----------+
+19 rows in set (0.00 sec)
+
+--------------
+/* Query 4 */
+
+UPDATE product 
+SET discount_percent = 30 
+WHERE category_id = 81
+--------------
+
+Query OK, 1 row affected (0.14 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+/* Query 5 */
+
+DELETE FROM product 
+WHERE category_id = '81'
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+
+--------------
+DELETE FROM category
+WHERE category_name = 'Cameras and Camcorders'
+--------------
+
+Query OK, 1 row affected (0.06 sec)
+
+--------------
+SELECT * FROM product
+--------------
+
++------------+-------------+--------------+------------------------+---------------------------------------------------------------------------------------------------------------------------------+------------+------------------+---------------------+-----------+
+| product_id | category_id | product_code | product_name           | description                                                                                                                     | list_price | discount_percent | date_added          | vendor_id |
++------------+-------------+--------------+------------------------+---------------------------------------------------------------------------------------------------------------------------------+------------+------------------+---------------------+-----------+
+|       1234 |          11 | comp1230     | Dell XPS 8700          | Dell XPS 8700 Desktop , Intel Core i7, 4GB Graphics                                                                             |     999.00 |            20.00 | 2014-10-30 09:32:40 |         2 |
+|       2234 |          11 | comp3450     | Lenovo H50 Desktop     | Lenovo H50 Desktop , Intel Core i7, 2GB Graphics                                                                                |    1199.00 |            30.00 | 2014-12-05 16:33:13 |         2 |
+|       3234 |          11 | comp1760     | HP Envy 750qe Desktop  | HP Envy 750qe Desktop , Intel Core i7, 4GB Graphics, Windows 10.                                                                |    2517.00 |            52.00 | 2015-02-04 11:04:31 |         2 |
+|       4234 |          11 | lap3450      | Toshiba Satellite S55T | Toshiba Satellite S55T Touchscreen Laptop , Intel Core i7 , 4GB Graphics | 4K Ultra HD.                                         |     989.99 |            20.00 | 2015-06-01 11:12:59 |         2 |
+|       5234 |          11 | lap3423      | HP Pavilion 15t Star   | HP Pavilion 15t Star Wars Special Edition Touchscreen Laptop, Intel Core i7, 1080p, 2GB Graphics, Backlit Keyboard , Windows 10 |    1299.00 |             0.00 | 2015-07-30 13:58:35 |         3 |
+|       6234 |          11 | lap9000      | Dell Inspiron 17 5000  | Dell Inspiron 17 5000 Series Touchscreen Laptop, Intel Core i7, 4GB Graphics, 1080p                                             |    1415.00 |            39.00 | 2015-07-30 14:12:41 |         2 |
+|       7234 |          21 | CD3467       | Classical Music        | The best classical music                                                                                                        |      99.99 |            30.00 | 2015-06-01 11:29:35 |         3 |
+|       8234 |          21 | CD7689       | Pop 3                  | The best popular music                                                                                                          |      49.99 |            25.00 | 2015-07-30 14:18:33 |         5 |
+|       9234 |          51 | video1234    | 2412: The Return       | Aliens return                                                                                                                   |      14.99 |            30.00 | 2015-07-30 12:46:40 |         5 |
+|      10234 |          51 | video4567    | Z Files                | Series on mysterious activities                                                                                                 |      49.99 |            15.00 | 2015-07-30 13:14:15 |         3 |
+|      11234 |          41 | book9907     | Modern Science         | A description of modern science                                                                                                 |      19.95 |            20.00 | 2014-10-30 09:32:40 |         5 |
+|      12234 |          41 | book6789     | Chemistry              | Introduction to Chemistry                                                                                                       |      30.00 |            20.00 | 2013-10-30 09:32:40 |         5 |
+|      13234 |          31 | DVD12356     | Space Force 9          | Adventures of heroes                                                                                                            |      13.95 |            20.00 | 2012-10-30 10:32:50 |         9 |
+|      14234 |          31 | DVD6789      | From Another Planet    | Alien from another planet lands on Earth                                                                                        |      49.99 |            20.00 | 2012-10-30 10:34:30 |         9 |
+|      15234 |          31 | DVD8779      | Supernova              | A star explodes                                                                                                                 |      25.99 |            15.00 | 2011-10-30 10:32:40 |         5 |
+|      16234 |          61 | print2345    | HP Color LaserJet      | HP Color LaserJet Enterprise M553n Printer                                                                                      |     599.00 |            20.00 | 2015-10-30 09:35:20 |         5 |
+|      18234 |          61 | print7687    | HP LaserJet Pro        | HP LaserJet Pro M277dw Multifunction Color Printer                                                                              |     200.99 |            20.00 | 2011-10-30 10:34:30 |         5 |
+|      19234 |          61 | print4356    | HP LaserJet Pro        | HP LaserJet Pro M225dw Black and White Multifunction Printer                                                                    |     500.99 |            15.00 | 2012-10-30 10:32:40 |         5 |
++------------+-------------+--------------+------------------------+---------------------------------------------------------------------------------------------------------------------------------+------------+------------------+---------------------+-----------+
+18 rows in set (0.00 sec)
+
+--------------
+/* Query 6 */
+
+UPDATE orders 
+SET card_type = 'American Express' 
+WHERE order_id = '9'
+--------------
+
+Query OK, 1 row affected (0.11 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+/* Query 7 */
+
+DELETE FROM orderitems 
+WHERE order_id = '5'
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+
+--------------
+DELETE FROM orders
+WHERE order_id = '5'
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+
+--------------
+/* Query 8 */
+
+UPDATE employee 
+SET salary = '6500' 
+WHERE salary = '6000'
+--------------
+
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+select * from employee
+--------------
+
++-------------+----------+------------+-----------+--------------+------------------------+---------+-------+
+| employee_id | store_id | first_name | last_name | phone        | email                  | salary  | mgr   |
++-------------+----------+------------+-----------+--------------+------------------------+---------+-------+
+|       55447 | S7       | Marwan     | Lee       | 206-527-0012 | Marwan.Lee@PSB.com     | 2800.00 | 78397 |
+|       66447 | S5       | John       | Alexander | 206-527-0014 | John.Alexander@PBS.com | 2500.00 | 88887 |
+|       73447 | S3       | Mary       | Stuart    | 206-527-0012 | Mary.Stuart@PSB.com    | 2800.00 | 78397 |
+|       73557 | S3       | William    | Orange    | 206-527-0013 | William.Orange@PBS.com | 3400.00 | 78397 |
+|       78397 | S1       | Anne       | Stuart    | 206-527-0010 | Anne.Stuart@PBS.com    | 6500.00 |  NULL |
+|       88447 | S4       | John       | Griffith  | 206-527-0014 | John.Griffith@PBS.com  | 4500.00 | 88887 |
+|       88887 | S2       | George     | Stuart    | 206-527-0011 | George.Stuart@PBS.com  | 3000.00 | 78397 |
+|       99887 | S6       | George     | Victor    | 206-527-0011 | George.victor@PBS.com  | 3000.00 | 78397 |
++-------------+----------+------------+-----------+--------------+------------------------+---------+-------+
+8 rows in set (0.00 sec)
+
+--------------
+/* Query 9 */
+
+INSERT INTO customer ( customer_id , email_address ,  password , 
+                       first_name , last_name ) 
+  VALUES ( 99999 , 'rick@raven.com' , ' ' , 'Rick' , 'Raven' )
+--------------
+
+Query OK, 1 row affected (0.13 sec)
+
+--------------
+SELECT * FROM customer
+--------------
+
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+| customer_id | email_address               | password                                 | first_name | last_name | shipping_address_id | billing_address_id |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+|       11119 | allan.sherwood@yahoo.com    | 650215acec746f0e32bdfff387439eefc1358737 | Allan      | Sherwood  |                   1 |                  2 |
+|       22229 | barryz@gmail.com            | 3f563468d42a448cb1e56924529f6e7bbe529cc7 | Barry      | Zimmer    |                   3 |                  3 |
+|       33339 | christineb@solarone.com     | ed19f5c0833094026a2f1e9e6f08a35d26037066 | Christine  | Brown     |                   4 |                  4 |
+|       44449 | david.goldstein@hotmail.com | b444ac06613fc8d63795be9ad0beaf55011936ac | David      | Goldstein |                   5 |                  6 |
+|       55559 | erinv@gmail.com             | 109f4b3c50d7b0df729d299bc6f8e9ef9066971f | Erin       | Valentino |                   7 |                  7 |
+|       66669 | frankwilson@sbcglobal.net   | 3ebfa301dc59196f18593c45e519287a23297589 | Frank Lee  | Wilson    |                   8 |                  8 |
+|       77779 | gary_hernandez@yahoo.com    | 1ff2b3704aede04eecb51e50ca698efd50a1379b | Gary       | Hernandez |                   9 |                 10 |
+|       88889 | heatheresway@mac.com        | 911ddc3b8f9a13b5499b6bc4638a2b4f3f68bf23 | Heather    | Esway     |                  11 |                 12 |
+|       99999 | rick@raven.com              |                                          | Rick       | Raven     |                NULL |               NULL |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+9 rows in set (0.00 sec)
+
+--------------
+/* Query 10 */
+
+UPDATE customer 
+SET password = 'secret' 
+WHERE email_address = 'rick@raven.com'
+--------------
+
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+--------------
+SELECT * FROM customer
+--------------
+
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+| customer_id | email_address               | password                                 | first_name | last_name | shipping_address_id | billing_address_id |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+|       11119 | allan.sherwood@yahoo.com    | 650215acec746f0e32bdfff387439eefc1358737 | Allan      | Sherwood  |                   1 |                  2 |
+|       22229 | barryz@gmail.com            | 3f563468d42a448cb1e56924529f6e7bbe529cc7 | Barry      | Zimmer    |                   3 |                  3 |
+|       33339 | christineb@solarone.com     | ed19f5c0833094026a2f1e9e6f08a35d26037066 | Christine  | Brown     |                   4 |                  4 |
+|       44449 | david.goldstein@hotmail.com | b444ac06613fc8d63795be9ad0beaf55011936ac | David      | Goldstein |                   5 |                  6 |
+|       55559 | erinv@gmail.com             | 109f4b3c50d7b0df729d299bc6f8e9ef9066971f | Erin       | Valentino |                   7 |                  7 |
+|       66669 | frankwilson@sbcglobal.net   | 3ebfa301dc59196f18593c45e519287a23297589 | Frank Lee  | Wilson    |                   8 |                  8 |
+|       77779 | gary_hernandez@yahoo.com    | 1ff2b3704aede04eecb51e50ca698efd50a1379b | Gary       | Hernandez |                   9 |                 10 |
+|       88889 | heatheresway@mac.com        | 911ddc3b8f9a13b5499b6bc4638a2b4f3f68bf23 | Heather    | Esway     |                  11 |                 12 |
+|       99999 | rick@raven.com              | secret                                   | Rick       | Raven     |                NULL |               NULL |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+9 rows in set (0.00 sec)
+
+--------------
+/* Query 11 */
+
+UPDATE customer
+SET password = 'reset'
+--------------
+
+Query OK, 9 rows affected (0.06 sec)
+Rows matched: 9  Changed: 9  Warnings: 0
+
+--------------
+SELECT * FROM customer
+--------------
+
++-------------+-----------------------------+----------+------------+-----------+---------------------+--------------------+
+| customer_id | email_address               | password | first_name | last_name | shipping_address_id | billing_address_id |
++-------------+-----------------------------+----------+------------+-----------+---------------------+--------------------+
+|       11119 | allan.sherwood@yahoo.com    | reset    | Allan      | Sherwood  |                   1 |                  2 |
+|       22229 | barryz@gmail.com            | reset    | Barry      | Zimmer    |                   3 |                  3 |
+|       33339 | christineb@solarone.com     | reset    | Christine  | Brown     |                   4 |                  4 |
+|       44449 | david.goldstein@hotmail.com | reset    | David      | Goldstein |                   5 |                  6 |
+|       55559 | erinv@gmail.com             | reset    | Erin       | Valentino |                   7 |                  7 |
+|       66669 | frankwilson@sbcglobal.net   | reset    | Frank Lee  | Wilson    |                   8 |                  8 |
+|       77779 | gary_hernandez@yahoo.com    | reset    | Gary       | Hernandez |                   9 |                 10 |
+|       88889 | heatheresway@mac.com        | reset    | Heather    | Esway     |                  11 |                 12 |
+|       99999 | rick@raven.com              | reset    | Rick       | Raven     |                NULL |               NULL |
++-------------+-----------------------------+----------+------------+-----------+---------------------+--------------------+
+9 rows in set (0.00 sec)
+
+mysql> notee

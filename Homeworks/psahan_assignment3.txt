@@ -1,0 +1,460 @@
+mysql> source c:\my_scripts\psahan_assignment3.sql
+Show warnings enabled.
+--------------
+/*  Assignment 3.sql 
+    Perihan Sahan
+    CS 155A, Fall 2017 */
+
+
+   /* enable warnings! */
+
+/* BOOKSTORE */
+
+USE bookstore
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+/* Query 0 */
+
+SELECT user(), current_date(), version(), @@sql_mode
+--------------
+
+*************************** 1. row ***************************
+        user(): root@localhost
+current_date(): 2017-09-10
+     version(): 5.7.19-log
+    @@sql_mode: STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+1 row in set (0.00 sec)
+
+--------------
+/* Query 1 */
+SELECT * 
+FROM customer 
+WHERE customer_id BETWEEN 22229 AND 66669
+--------------
+
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+| customer_id | email_address               | password                                 | first_name | last_name | shipping_address_id | billing_address_id |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+|       22229 | barryz@gmail.com            | 3f563468d42a448cb1e56924529f6e7bbe529cc7 | Barry      | Zimmer    |                   3 |                  3 |
+|       33339 | christineb@solarone.com     | ed19f5c0833094026a2f1e9e6f08a35d26037066 | Christine  | Brown     |                   4 |                  4 |
+|       44449 | david.goldstein@hotmail.com | b444ac06613fc8d63795be9ad0beaf55011936ac | David      | Goldstein |                   5 |                  6 |
+|       55559 | erinv@gmail.com             | 109f4b3c50d7b0df729d299bc6f8e9ef9066971f | Erin       | Valentino |                   7 |                  7 |
+|       66669 | frankwilson@sbcglobal.net   | 3ebfa301dc59196f18593c45e519287a23297589 | Frank Lee  | Wilson    |                   8 |                  8 |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+5 rows in set (0.00 sec)
+
+--------------
+SELECT last_name, first_name, customer_id 
+FROM customer
+--------------
+
++-----------+------------+-------------+
+| last_name | first_name | customer_id |
++-----------+------------+-------------+
+| Sherwood  | Allan      |       11119 |
+| Zimmer    | Barry      |       22229 |
+| Brown     | Christine  |       33339 |
+| Goldstein | David      |       44449 |
+| Valentino | Erin       |       55559 |
+| Wilson    | Frank Lee  |       66669 |
+| Hernandez | Gary       |       77779 |
+| Esway     | Heather    |       88889 |
++-----------+------------+-------------+
+8 rows in set (0.00 sec)
+
+--------------
+SELECT last_name, first_name, customer_id 
+FROM customer 
+WHERE customer_id BETWEEN 22229 AND 66669
+--------------
+
++-----------+------------+-------------+
+| last_name | first_name | customer_id |
++-----------+------------+-------------+
+| Zimmer    | Barry      |       22229 |
+| Brown     | Christine  |       33339 |
+| Goldstein | David      |       44449 |
+| Valentino | Erin       |       55559 |
+| Wilson    | Frank Lee  |       66669 |
++-----------+------------+-------------+
+5 rows in set (0.00 sec)
+
+--------------
+/* Query 2 */
+SELECT *
+FROM employee
+WHERE NOT(salary = 3400 OR salary = 3000 OR salary = 6000)
+--------------
+
++-------------+----------+------------+-----------+--------------+------------------------+---------+-------+
+| employee_id | store_id | first_name | last_name | phone        | email                  | salary  | mgr   |
++-------------+----------+------------+-----------+--------------+------------------------+---------+-------+
+|       55447 | S7       | Marwan     | Lee       | 206-527-0012 | Marwan.Lee@PSB.com     | 2800.00 | 78397 |
+|       66447 | S5       | John       | Alexander | 206-527-0014 | John.Alexander@PBS.com | 2500.00 | 88887 |
+|       73447 | S3       | Mary       | Stuart    | 206-527-0012 | Mary.Stuart@PSB.com    | 2800.00 | 78397 |
+|       88447 | S4       | John       | Griffith  | 206-527-0014 | John.Griffith@PBS.com  | 4500.00 | 88887 |
++-------------+----------+------------+-----------+--------------+------------------------+---------+-------+
+4 rows in set (0.00 sec)
+
+--------------
+SELECT last_name
+FROM employee
+WHERE last_name LIKE 'S%'
+--------------
+
++-----------+
+| last_name |
++-----------+
+| Stuart    |
+| Stuart    |
+| Stuart    |
++-----------+
+3 rows in set (0.00 sec)
+
+--------------
+SELECT *
+FROM employee
+WHERE last_name LIKE 'S%' AND NOT (salary = 3400 OR salary = 3000 OR salary=6000)
+--------------
+
++-------------+----------+------------+-----------+--------------+---------------------+---------+-------+
+| employee_id | store_id | first_name | last_name | phone        | email               | salary  | mgr   |
++-------------+----------+------------+-----------+--------------+---------------------+---------+-------+
+|       73447 | S3       | Mary       | Stuart    | 206-527-0012 | Mary.Stuart@PSB.com | 2800.00 | 78397 |
++-------------+----------+------------+-----------+--------------+---------------------+---------+-------+
+1 row in set (0.00 sec)
+
+--------------
+SELECT first_name, last_name, salary 
+FROM employee
+--------------
+
++------------+-----------+---------+
+| first_name | last_name | salary  |
++------------+-----------+---------+
+| Marwan     | Lee       | 2800.00 |
+| John       | Alexander | 2500.00 |
+| Mary       | Stuart    | 2800.00 |
+| William    | Orange    | 3400.00 |
+| Anne       | Stuart    | 6000.00 |
+| John       | Griffith  | 4500.00 |
+| George     | Stuart    | 3000.00 |
+| George     | Victor    | 3000.00 |
++------------+-----------+---------+
+8 rows in set (0.00 sec)
+
+--------------
+SELECT first_name, last_name, salary 
+FROM employee
+WHERE last_name LIKE 'S%' AND NOT (salary = 3400 OR salary = 3000 OR salary=6000)
+--------------
+
++------------+-----------+---------+
+| first_name | last_name | salary  |
++------------+-----------+---------+
+| Mary       | Stuart    | 2800.00 |
++------------+-----------+---------+
+1 row in set (0.00 sec)
+
+--------------
+/* Query 3 */
+SELECT order_id, order_date, ship_date 
+FROM orders
+WHERE ship_date IS NULL
+--------------
+
++----------+---------------------+-----------+
+| order_id | order_date          | ship_date |
++----------+---------------------+-----------+
+|        5 | 2015-03-31 05:43:11 | NULL      |
+|        6 | 2015-03-31 18:37:22 | NULL      |
+|        8 | 2015-04-02 11:26:38 | NULL      |
+|        9 | 2015-04-03 12:22:31 | NULL      |
+|       10 | 2015-05-03 12:22:31 | NULL      |
+|       11 | 2015-06-03 12:22:31 | NULL      |
++----------+---------------------+-----------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Query 4 */
+SELECT *
+FROM customer
+WHERE last_name REGEXP 'IN'
+--------------
+
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+| customer_id | email_address               | password                                 | first_name | last_name | shipping_address_id | billing_address_id |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+|       44449 | david.goldstein@hotmail.com | b444ac06613fc8d63795be9ad0beaf55011936ac | David      | Goldstein |                   5 |                  6 |
+|       55559 | erinv@gmail.com             | 109f4b3c50d7b0df729d299bc6f8e9ef9066971f | Erin       | Valentino |                   7 |                  7 |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+2 rows in set (0.00 sec)
+
+--------------
+SELECT last_name, first_name
+FROM customer
+--------------
+
++-----------+------------+
+| last_name | first_name |
++-----------+------------+
+| Sherwood  | Allan      |
+| Zimmer    | Barry      |
+| Brown     | Christine  |
+| Goldstein | David      |
+| Valentino | Erin       |
+| Wilson    | Frank Lee  |
+| Hernandez | Gary       |
+| Esway     | Heather    |
++-----------+------------+
+8 rows in set (0.00 sec)
+
+--------------
+SELECT last_name, first_name
+FROM customer
+WHERE last_name REGEXP 'IN' 
+ORDER BY first_name DESC
+--------------
+
++-----------+------------+
+| last_name | first_name |
++-----------+------------+
+| Valentino | Erin       |
+| Goldstein | David      |
++-----------+------------+
+2 rows in set (0.00 sec)
+
+--------------
+/* Query 5 */
+SELECT product_id, product_name, list_price 
+FROM product 
+WHERE list_price > 30 AND list_price < 900
+--------------
+
++------------+---------------------+------------+
+| product_id | product_name        | list_price |
++------------+---------------------+------------+
+|       7234 | Classical Music     |      99.99 |
+|       8234 | Pop 3               |      49.99 |
+|      10234 | Z Files             |      49.99 |
+|      14234 | From Another Planet |      49.99 |
+|      16234 | HP Color LaserJet   |     599.00 |
+|      18234 | HP LaserJet Pro     |     200.99 |
+|      19234 | HP LaserJet Pro     |     500.99 |
++------------+---------------------+------------+
+7 rows in set (0.00 sec)
+
+--------------
+/* Query 6 */
+SELECT order_id, order_date 
+FROM orders
+WHERE order_date BETWEEN '2015-03-01' AND '2015-03-31 18:37:22'
+ORDER BY order_date DESC
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        6 | 2015-03-31 18:37:22 |
+|        5 | 2015-03-31 05:43:11 |
+|        4 | 2015-03-30 15:22:31 |
+|        3 | 2015-03-29 09:44:58 |
+|        2 | 2015-03-28 11:23:20 |
+|        1 | 2015-03-28 09:40:28 |
++----------+---------------------+
+6 rows in set (0.00 sec)
+
+--------------
+SELECT order_id, order_date 
+FROM orders
+WHERE order_date BETWEEN '2015-03-01' AND '2015-04-01' 
+ORDER BY order_date DESC
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        6 | 2015-03-31 18:37:22 |
+|        5 | 2015-03-31 05:43:11 |
+|        4 | 2015-03-30 15:22:31 |
+|        3 | 2015-03-29 09:44:58 |
+|        2 | 2015-03-28 11:23:20 |
+|        1 | 2015-03-28 09:40:28 |
++----------+---------------------+
+6 rows in set (0.00 sec)
+
+--------------
+SELECT order_id, order_date 
+FROM orders
+WHERE order_date > '2015-02-28' AND order_date < '2015-04-01' 
+ORDER BY order_date DESC
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        6 | 2015-03-31 18:37:22 |
+|        5 | 2015-03-31 05:43:11 |
+|        4 | 2015-03-30 15:22:31 |
+|        3 | 2015-03-29 09:44:58 |
+|        2 | 2015-03-28 11:23:20 |
+|        1 | 2015-03-28 09:40:28 |
++----------+---------------------+
+6 rows in set (0.00 sec)
+
+--------------
+SELECT order_id, order_date 
+FROM orders
+WHERE order_date REGEXP '^.....03' 
+ORDER BY order_date DESC
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        6 | 2015-03-31 18:37:22 |
+|        5 | 2015-03-31 05:43:11 |
+|        4 | 2015-03-30 15:22:31 |
+|        3 | 2015-03-29 09:44:58 |
+|        2 | 2015-03-28 11:23:20 |
+|        1 | 2015-03-28 09:40:28 |
++----------+---------------------+
+6 rows in set (0.00 sec)
+
+--------------
+/* Query 7 */
+SELECT order_id, ship_date
+FROM orders
+WHERE ship_date > '2015-01-10'
+--------------
+
++----------+---------------------+
+| order_id | ship_date           |
++----------+---------------------+
+|        1 | 2015-03-30 15:32:51 |
+|        2 | 2015-03-29 12:52:14 |
+|        3 | 2015-03-31 09:11:41 |
+|        4 | 2015-04-03 16:32:21 |
+|        7 | 2015-04-03 10:21:35 |
++----------+---------------------+
+5 rows in set (0.00 sec)
+
+--------------
+/* Query 8 */
+SELECT order_id, order_date
+FROM orders 
+WHERE order_date REGEXP '^.....04'
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        7 | 2015-04-01 23:11:12 |
+|        8 | 2015-04-02 11:26:38 |
+|        9 | 2015-04-03 12:22:31 |
++----------+---------------------+
+3 rows in set (0.00 sec)
+
+--------------
+SELECT order_id, order_date
+FROM orders 
+WHERE order_date <= '2015-04-01 23:11:12'
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        1 | 2015-03-28 09:40:28 |
+|        2 | 2015-03-28 11:23:20 |
+|        3 | 2015-03-29 09:44:58 |
+|        4 | 2015-03-30 15:22:31 |
+|        5 | 2015-03-31 05:43:11 |
+|        6 | 2015-03-31 18:37:22 |
+|        7 | 2015-04-01 23:11:12 |
++----------+---------------------+
+7 rows in set (0.00 sec)
+
+--------------
+SELECT order_id, order_date
+FROM orders 
+WHERE order_date <= '2015-04-02'
+--------------
+
++----------+---------------------+
+| order_id | order_date          |
++----------+---------------------+
+|        1 | 2015-03-28 09:40:28 |
+|        2 | 2015-03-28 11:23:20 |
+|        3 | 2015-03-29 09:44:58 |
+|        4 | 2015-03-30 15:22:31 |
+|        5 | 2015-03-31 05:43:11 |
+|        6 | 2015-03-31 18:37:22 |
+|        7 | 2015-04-01 23:11:12 |
++----------+---------------------+
+7 rows in set (0.00 sec)
+
+--------------
+/* Query 9 */
+SELECT product_id, product_code, product_name 
+FROM product
+--------------
+
++------------+--------------+------------------------+
+| product_id | product_code | product_name           |
++------------+--------------+------------------------+
+|       1234 | comp1230     | Dell XPS 8700          |
+|       2234 | comp3450     | Lenovo H50 Desktop     |
+|       3234 | comp1760     | HP Envy 750qe Desktop  |
+|       4234 | lap3450      | Toshiba Satellite S55T |
+|       5234 | lap3423      | HP Pavilion 15t Star   |
+|       6234 | lap9000      | Dell Inspiron 17 5000  |
+|       7234 | CD3467       | Classical Music        |
+|       8234 | CD7689       | Pop 3                  |
+|       9234 | video1234    | 2412: The Return       |
+|      10234 | video4567    | Z Files                |
+|      11234 | book9907     | Modern Science         |
+|      12234 | book6789     | Chemistry              |
+|      13234 | DVD12356     | Space Force 9          |
+|      14234 | DVD6789      | From Another Planet    |
+|      15234 | DVD8779      | Supernova              |
+|      16234 | print2345    | HP Color LaserJet      |
+|      18234 | print7687    | HP LaserJet Pro        |
+|      19234 | print4356    | HP LaserJet Pro        |
++------------+--------------+------------------------+
+18 rows in set (0.00 sec)
+
+--------------
+SELECT product_id, product_code, product_name 
+FROM product
+WHERE product_name REGEXP '^.E.L'
+ORDER BY product_code DESC
+--------------
+
++------------+--------------+-----------------------+
+| product_id | product_code | product_name          |
++------------+--------------+-----------------------+
+|       6234 | lap9000      | Dell Inspiron 17 5000 |
+|       1234 | comp1230     | Dell XPS 8700         |
++------------+--------------+-----------------------+
+2 rows in set (0.00 sec)
+
+--------------
+/* Query 10 */
+SELECT product_id, category_id, vendor_id, list_price
+FROM product
+WHERE list_price > 1110.00 AND (category_id = 11 OR category_id = 61) AND (vendor_id = 2 OR vendor_id =1)
+--------------
+
++------------+-------------+-----------+------------+
+| product_id | category_id | vendor_id | list_price |
++------------+-------------+-----------+------------+
+|       2234 |          11 |         2 |    1199.00 |
+|       3234 |          11 |         2 |    2517.00 |
+|       6234 |          11 |         2 |    1415.00 |
++------------+-------------+-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> notee

@@ -1,0 +1,247 @@
+mysql> source c:\my_scripts\psahan_assignment2.sql
+Show warnings enabled.
+--------------
+/* Assignment2.sql
+Perihan Sahan 
+CS 155A, Fall 2017 */
+ /* enable warnings! */
+
+USE bookstore
+--------------
+
+Query OK, 0 rows affected (0.08 sec)
+
+--------------
+/* Query 0 */
+SELECT user(), current_date(), version(), @@sql_mode
+--------------
+
+*************************** 1. row ***************************
+        user(): root@localhost
+current_date(): 2017-09-05
+     version(): 5.7.19-log
+    @@sql_mode: STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+1 row in set (0.08 sec)
+
+--------------
+/* Query 1 */
+SELECT * 
+FROM customer 
+WHERE customer_id != 77779
+--------------
+
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+| customer_id | email_address               | password                                 | first_name | last_name | shipping_address_id | billing_address_id |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+|       11119 | allan.sherwood@yahoo.com    | 650215acec746f0e32bdfff387439eefc1358737 | Allan      | Sherwood  |                   1 |                  2 |
+|       22229 | barryz@gmail.com            | 3f563468d42a448cb1e56924529f6e7bbe529cc7 | Barry      | Zimmer    |                   3 |                  3 |
+|       33339 | christineb@solarone.com     | ed19f5c0833094026a2f1e9e6f08a35d26037066 | Christine  | Brown     |                   4 |                  4 |
+|       44449 | david.goldstein@hotmail.com | b444ac06613fc8d63795be9ad0beaf55011936ac | David      | Goldstein |                   5 |                  6 |
+|       55559 | erinv@gmail.com             | 109f4b3c50d7b0df729d299bc6f8e9ef9066971f | Erin       | Valentino |                   7 |                  7 |
+|       66669 | frankwilson@sbcglobal.net   | 3ebfa301dc59196f18593c45e519287a23297589 | Frank Lee  | Wilson    |                   8 |                  8 |
+|       88889 | heatheresway@mac.com        | 911ddc3b8f9a13b5499b6bc4638a2b4f3f68bf23 | Heather    | Esway     |                  11 |                 12 |
++-------------+-----------------------------+------------------------------------------+------------+-----------+---------------------+--------------------+
+7 rows in set (0.64 sec)
+
+--------------
+SELECT last_name, first_name, customer_id 
+FROM customer
+--------------
+
++-----------+------------+-------------+
+| last_name | first_name | customer_id |
++-----------+------------+-------------+
+| Sherwood  | Allan      |       11119 |
+| Zimmer    | Barry      |       22229 |
+| Brown     | Christine  |       33339 |
+| Goldstein | David      |       44449 |
+| Valentino | Erin       |       55559 |
+| Wilson    | Frank Lee  |       66669 |
+| Hernandez | Gary       |       77779 |
+| Esway     | Heather    |       88889 |
++-----------+------------+-------------+
+8 rows in set (0.00 sec)
+
+--------------
+/* Query 2 */
+SELECT product_name, description
+FROM product 
+WHERE category_id > 21
+--------------
+
++---------------------+--------------------------------------------------------------+
+| product_name        | description                                                  |
++---------------------+--------------------------------------------------------------+
+| 2412: The Return    | Aliens return                                                |
+| Z Files             | Series on mysterious activities                              |
+| Modern Science      | A description of modern science                              |
+| Chemistry           | Introduction to Chemistry                                    |
+| Space Force 9       | Adventures of heroes                                         |
+| From Another Planet | Alien from another planet lands on Earth                     |
+| Supernova           | A star explodes                                              |
+| HP Color LaserJet   | HP Color LaserJet Enterprise M553n Printer                   |
+| HP LaserJet Pro     | HP LaserJet Pro M277dw Multifunction Color Printer           |
+| HP LaserJet Pro     | HP LaserJet Pro M225dw Black and White Multifunction Printer |
++---------------------+--------------------------------------------------------------+
+10 rows in set (0.13 sec)
+
+--------------
+/* Query 3 */
+SELECT  last_name, first_name, customer_id, email_address
+FROM customer 
+WHERE customer_id = 11119
+--------------
+
++-----------+------------+-------------+--------------------------+
+| last_name | first_name | customer_id | email_address            |
++-----------+------------+-------------+--------------------------+
+| Sherwood  | Allan      |       11119 | allan.sherwood@yahoo.com |
++-----------+------------+-------------+--------------------------+
+1 row in set (0.03 sec)
+
+--------------
+/* Query 4 */
+SELECT item_id, item_price, discount_amount, quantity, 
+item_price * quantity AS price_total, 
+discount_amount * quantity AS discount_total, 
+(item_price - discount_amount) * quantity AS item_total
+FROM orderitems
+ORDER BY item_total DESC
+LIMIT 5
+--------------
+
++---------+------------+-----------------+----------+-------------+----------------+------------+
+| item_id | item_price | discount_amount | quantity | price_total | discount_total | item_total |
++---------+------------+-----------------+----------+-------------+----------------+------------+
+|       7 |    1199.00 |          359.70 |        2 |     2398.00 |         719.40 |    1678.60 |
+|       9 |    1299.00 |            0.00 |        1 |     1299.00 |           0.00 |    1299.00 |
+|      10 |    1299.00 |            0.00 |        1 |     1299.00 |           0.00 |    1299.00 |
+|       6 |    1299.00 |            0.00 |        1 |     1299.00 |           0.00 |    1299.00 |
+|       4 |    2517.00 |         1308.84 |        1 |     2517.00 |        1308.84 |    1208.16 |
++---------+------------+-----------------+----------+-------------+----------------+------------+
+5 rows in set (0.06 sec)
+
+--------------
+/* Query 5 */
+SELECT store_id "store ID" , region_id "region ID" , region_name "region name" 
+FROM store
+--------------
+
++----------+-----------+-------------+
+| store ID | region ID | region name |
++----------+-----------+-------------+
+| S1       | C         | Chicagoland |
+| S2       | T         | Tristate    |
+| S3       | C         | Chicagoland |
+| S4       | T         | Tristate    |
+| S5       | I         | Indiana     |
+| S6       | I         | Indiana     |
+| S7       | N         | North       |
++----------+-----------+-------------+
+7 rows in set (0.06 sec)
+
+--------------
+/* Query 6 */
+SELECT customer_id, email_address
+FROM customer
+--------------
+
++-------------+-----------------------------+
+| customer_id | email_address               |
++-------------+-----------------------------+
+|       11119 | allan.sherwood@yahoo.com    |
+|       22229 | barryz@gmail.com            |
+|       33339 | christineb@solarone.com     |
+|       44449 | david.goldstein@hotmail.com |
+|       55559 | erinv@gmail.com             |
+|       66669 | frankwilson@sbcglobal.net   |
+|       77779 | gary_hernandez@yahoo.com    |
+|       88889 | heatheresway@mac.com        |
++-------------+-----------------------------+
+8 rows in set (0.00 sec)
+
+--------------
+/* Query 7 */
+SELECT DISTINCT customer_id
+FROM orders
+--------------
+
++-------------+
+| customer_id |
++-------------+
+|       11119 |
+|       22229 |
+|       33339 |
+|       44449 |
+|       55559 |
+|       66669 |
+|       77779 |
++-------------+
+7 rows in set (0.09 sec)
+
+--------------
+/* Query 8 */
+ SELECT product_name, list_price, discount_percent,
+(list_price * discount_percent) / 100 AS discount_amount,
+list_price - (list_price * discount_percent) / 100 AS discount_price
+FROM product 
+ORDER BY discount_price DESC
+LIMIT 5
+--------------
+
++-----------------------+------------+------------------+-----------------+----------------+
+| product_name          | list_price | discount_percent | discount_amount | discount_price |
++-----------------------+------------+------------------+-----------------+----------------+
+| HP Pavilion 15t Star  |    1299.00 |             0.00 |      0.00000000 |  1299.00000000 |
+| HP Envy 750qe Desktop |    2517.00 |            52.00 |   1308.84000000 |  1208.16000000 |
+| Dell Inspiron 17 5000 |    1415.00 |            39.00 |    551.85000000 |   863.15000000 |
+| Lenovo H50 Desktop    |    1199.00 |            30.00 |    359.70000000 |   839.30000000 |
+| Dell XPS 8700         |     999.00 |            20.00 |    199.80000000 |   799.20000000 |
++-----------------------+------------+------------------+-----------------+----------------+
+5 rows in set (0.00 sec)
+
+--------------
+/* Query 9 */
+SELECT customer_id, CONCAT(line1, ', ', line2, ', ', zip_code) AS mailing_list, CONCAT(city, ', ', state) AS city_state
+FROM address
+--------------
+
++-------------+------------------------------------+--------------------+
+| customer_id | mailing_list                       | city_state         |
++-------------+------------------------------------+--------------------+
+|       11119 | 100 East Ridgewood Ave., , 07652   | Paramus, NJ        |
+|       11119 | 21 Rosewood Rd., , 07677           | Woodcliff Lake, NJ |
+|       22229 | 16285 Wendell St., , 68135         | Omaha, NE          |
+|       33339 | 19270 NW Cornell Rd., , 97006      | Beaverton, OR      |
+|       44449 | 186 Vermont St., Apt. 2, 94110     | San Francisco, CA  |
+|       44449 | 1374 46th Ave., , 94129            | San Francisco, CA  |
+|       55559 | 6982 Palm Ave., , 93711            | Fresno, CA         |
+|       66669 | 23 Mountain View St., , 80208      | Denver, CO         |
+|       77779 | 7361 N. 41st St., Apt. B, 10012    | New York, NY       |
+|       77779 | 3829 Broadway Ave., Suite 2, 10012 | New York, NY       |
+|       88889 | 2381 Buena Vista St., , 90023      | Los Angeles, CA    |
+|       88889 | 291 W. Hollywood Blvd., , 90024    | Los Angeles, CA    |
++-------------+------------------------------------+--------------------+
+12 rows in set (0.11 sec)
+
+--------------
+/* Query 10 */
+SELECT CONCAT(last_name , ',' , first_name) AS "full_name"
+FROM customer
+--------------
+
++------------------+
+| full_name        |
++------------------+
+| Sherwood,Allan   |
+| Zimmer,Barry     |
+| Brown,Christine  |
+| Goldstein,David  |
+| Valentino,Erin   |
+| Wilson,Frank Lee |
+| Hernandez,Gary   |
+| Esway,Heather    |
++------------------+
+8 rows in set (0.01 sec)
+
+mysql> notee

@@ -1,0 +1,130 @@
+mysql> SOURCE c:\my_scripts\psahan_assignment1a.sql
+Show warnings enabled.
+--------------
+ /* Assignment1.sql
+     Perihan Sahan 
+     CS 155A, Fall 2017 */
+      /* enable warnings! */
+
+
+  /* Query 0 */
+  SELECT user(), current_date(), version(), @@sql_mode
+--------------
+
+*************************** 1. row ***************************
+        user(): root@localhost
+current_date(): 2017-08-28
+     version(): 5.7.18-log
+    @@sql_mode: STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+1 row in set (0.00 sec)
+
+--------------
+  /* Query 1 */
+  CREATE DATABASE IF NOT EXISTS bookdb
+--------------
+
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+Note (Code 1007): Can't create database 'bookdb'; database exists
+Database changed
+--------------
+  /* Query 2 */
+  DROP TABLE IF EXISTS books
+--------------
+
+Query OK, 0 rows affected (0.04 sec)
+
+--------------
+  CREATE TABLE books (
+      isbn CHAR(10),
+      author VARCHAR(100) NOT NULL,
+      title VARCHAR(128) NOT NULL,
+      price DECIMAL(7 , 2 ) NOT NULL,
+      subject VARCHAR(30) NOT NULL,
+      PRIMARY KEY (isbn)
+      )ENGINE = INNODB
+--------------
+
+Query OK, 0 rows affected (0.09 sec)
+
+--------------
+  /* Query 3 */
+  INSERT INTO books
+  VALUES ('0345377648', 'Anne Rice', 'Lasher', 14.00, 'FICTION')
+--------------
+
+Query OK, 1 row affected (0.01 sec)
+
+--------------
+  INSERT INTO books
+  VALUES('1557044287','Ridley cott','Gladiator',26.36,'FICTION')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+  INSERT INTO books
+  VALUES ('0684856093', 'Sean Covey', 'The 7 Habits', 12, 'CHILDREN')
+--------------
+
+Query OK, 1 row affected (0.00 sec)
+
+--------------
+  /* Query 4 */
+  SHOW TABLES
+--------------
+
++------------------+
+| Tables_in_bookdb |
++------------------+
+| books            |
++------------------+
+1 row in set (0.00 sec)
+
+--------------
+  /* Query 5 */
+  DESCRIBE books
+--------------
+
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| isbn    | char(10)     | NO   | PRI | NULL    |       |
+| author  | varchar(100) | NO   |     | NULL    |       |
+| title   | varchar(128) | NO   |     | NULL    |       |
+| price   | decimal(7,2) | NO   |     | NULL    |       |
+| subject | varchar(30)  | NO   |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+--------------
+  /* Query 6 */
+  SELECT *
+  FROM books
+--------------
+
++------------+-------------+--------------+-------+----------+
+| isbn       | author      | title        | price | subject  |
++------------+-------------+--------------+-------+----------+
+| 0345377648 | Anne Rice   | Lasher       | 14.00 | FICTION  |
+| 0684856093 | Sean Covey  | The 7 Habits | 12.00 | CHILDREN |
+| 1557044287 | Ridley cott | Gladiator    | 26.36 | FICTION  |
++------------+-------------+--------------+-------+----------+
+3 rows in set (0.00 sec)
+
+--------------
+  /* Query 7 */
+  SELECT ISBN, title, price
+  FROM books
+--------------
+
++------------+--------------+-------+
+| ISBN       | title        | price |
++------------+--------------+-------+
+| 0345377648 | Lasher       | 14.00 |
+| 0684856093 | The 7 Habits | 12.00 |
+| 1557044287 | Gladiator    | 26.36 |
++------------+--------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> notee

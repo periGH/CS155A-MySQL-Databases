@@ -1,0 +1,373 @@
+mysql> source c:\my_scripts\psahan_assignment11.sql
+Show warnings enabled.
+--------------
+/*  Assignment 11.sql 
+    Perihan Sahan 
+    CS 155A, Fall 2017 */
+ 
+ 
+/* Just copy / paste from mysql command-line to a text editor to do this. */
+
+    
+
+/* BOOKSTORE DATABASE */
+
+USE bookstore
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+--------------
+/* Query 0 */
+
+SELECT user(), current_date(), version(), @@sql_mode
+--------------
+
+*************************** 1. row ***************************
+        user(): root@localhost
+current_date(): 2017-11-14
+     version(): 5.7.19-log
+    @@sql_mode: STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+1 row in set (0.15 sec)
+
+--------------
+/* Query 1 */
+
+CREATE VIEW customer_address(first_name, last_name, customer_id, ship_line1, ship_line2, ship_city, ship_state,ship_zip, bill_line1,bill_line2, bill_city, bill_state, bill_zip) AS
+SELECT c.first_name, c.last_name, a.customer_id,a.line1, a.line2, a.city, a.state, a.zip_code, a.line1, a.line2, a.city, a.state, a.zip_code 
+FROM customer c 
+JOIN address a ON (c.customer_id = a.customer_id)
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+SELECT * FROM customer_address
+--------------
+
++------------+-----------+-------------+------------------------+------------+----------------+------------+----------+------------------------+------------+----------------+------------+----------+
+| first_name | last_name | customer_id | ship_line1             | ship_line2 | ship_city      | ship_state | ship_zip | bill_line1             | bill_line2 | bill_city      | bill_state | bill_zip |
++------------+-----------+-------------+------------------------+------------+----------------+------------+----------+------------------------+------------+----------------+------------+----------+
+| Allan      | Sherwood  |       11119 | 1990 Westwood Blvd.    |            | Paramus        | NJ         | 07652    | 1990 Westwood Blvd.    |            | Paramus        | NJ         | 07652    |
+| Allan      | Sherwood  |       11119 | 1990 Westwood Blvd.    |            | Woodcliff Lake | NJ         | 07677    | 1990 Westwood Blvd.    |            | Woodcliff Lake | NJ         | 07677    |
+| Barry      | Zimmer    |       22229 | 16285 Wendell St.      |            | Omaha          | NE         | 68135    | 16285 Wendell St.      |            | Omaha          | NE         | 68135    |
+| Christine  | Brown     |       33339 | 19270 NW Cornell Rd.   |            | Beaverton      | OR         | 97006    | 19270 NW Cornell Rd.   |            | Beaverton      | OR         | 97006    |
+| David      | Goldstein |       44449 | 186 Vermont St.        | Apt. 2     | San Francisco  | CA         | 94110    | 186 Vermont St.        | Apt. 2     | San Francisco  | CA         | 94110    |
+| David      | Goldstein |       44449 | 1374 46th Ave.         |            | San Francisco  | CA         | 94129    | 1374 46th Ave.         |            | San Francisco  | CA         | 94129    |
+| Erin       | Valentino |       55559 | 6982 Palm Ave.         |            | Fresno         | CA         | 93711    | 6982 Palm Ave.         |            | Fresno         | CA         | 93711    |
+| Frank Lee  | Wilson    |       66669 | 23 Mountain View St.   |            | Denver         | CO         | 80208    | 23 Mountain View St.   |            | Denver         | CO         | 80208    |
+| Gary       | Hernandez |       77779 | 7361 N. 41st St.       | Apt. B     | New York       | NY         | 10012    | 7361 N. 41st St.       | Apt. B     | New York       | NY         | 10012    |
+| Gary       | Hernandez |       77779 | 3829 Broadway Ave.     | Suite 2    | New York       | NY         | 10012    | 3829 Broadway Ave.     | Suite 2    | New York       | NY         | 10012    |
+| Heather    | Esway     |       88889 | 2381 Buena Vista St.   |            | Los Angeles    | CA         | 90023    | 2381 Buena Vista St.   |            | Los Angeles    | CA         | 90023    |
+| Heather    | Esway     |       88889 | 291 W. Hollywood Blvd. |            | Los Angeles    | CA         | 90024    | 291 W. Hollywood Blvd. |            | Los Angeles    | CA         | 90024    |
++------------+-----------+-------------+------------------------+------------+----------------+------------+----------+------------------------+------------+----------------+------------+----------+
+12 rows in set (0.00 sec)
+
+--------------
+CREATE or REPLACE view customer_info AS 
+SELECT customer_id, email_address, last_name, first_name
+FROM customer
+--------------
+
+Query OK, 0 rows affected (0.06 sec)
+
+--------------
+SELECT * FROM customer_info
+--------------
+
++-------------+-----------------------------+-----------+------------+
+| customer_id | email_address               | last_name | first_name |
++-------------+-----------------------------+-----------+------------+
+|       11119 | allan.sherwood@yahoo.com    | Sherwood  | Allan      |
+|       22229 | barryz@gmail.com            | Zimmer    | Barry      |
+|       33339 | christineb@solarone.com     | Brown     | Christine  |
+|       44449 | david.goldstein@hotmail.com | Goldstein | David      |
+|       55559 | erinv@gmail.com             | Valentino | Erin       |
+|       66669 | frankwilson@sbcglobal.net   | Wilson    | Frank Lee  |
+|       77779 | gary_hernandez@yahoo.com    | Hernandez | Gary       |
+|       88889 | heatheresway@mac.com        | Esway     | Heather    |
+|       99999 | rick@raven.com              | Raven     | Rick       |
++-------------+-----------------------------+-----------+------------+
+9 rows in set (0.00 sec)
+
+--------------
+CREATE VIEW cust_address(bill_line1, bill_line2, bill_city, bill_state, bill_zip, ship_line1, ship_line2, ship_city, ship_state, ship_zip)
+AS SELECT line1, line2, city, state, zip_code, line1, line2, city, state, zip_code
+FROM address
+--------------
+
+Query OK, 0 rows affected (0.05 sec)
+
+--------------
+SELECT * FROM cust_address
+--------------
+
++------------------------+------------+----------------+------------+----------+------------------------+------------+----------------+------------+----------+
+| bill_line1             | bill_line2 | bill_city      | bill_state | bill_zip | ship_line1             | ship_line2 | ship_city      | ship_state | ship_zip |
++------------------------+------------+----------------+------------+----------+------------------------+------------+----------------+------------+----------+
+| 1990 Westwood Blvd.    |            | Paramus        | NJ         | 07652    | 1990 Westwood Blvd.    |            | Paramus        | NJ         | 07652    |
+| 1990 Westwood Blvd.    |            | Woodcliff Lake | NJ         | 07677    | 1990 Westwood Blvd.    |            | Woodcliff Lake | NJ         | 07677    |
+| 16285 Wendell St.      |            | Omaha          | NE         | 68135    | 16285 Wendell St.      |            | Omaha          | NE         | 68135    |
+| 19270 NW Cornell Rd.   |            | Beaverton      | OR         | 97006    | 19270 NW Cornell Rd.   |            | Beaverton      | OR         | 97006    |
+| 186 Vermont St.        | Apt. 2     | San Francisco  | CA         | 94110    | 186 Vermont St.        | Apt. 2     | San Francisco  | CA         | 94110    |
+| 1374 46th Ave.         |            | San Francisco  | CA         | 94129    | 1374 46th Ave.         |            | San Francisco  | CA         | 94129    |
+| 6982 Palm Ave.         |            | Fresno         | CA         | 93711    | 6982 Palm Ave.         |            | Fresno         | CA         | 93711    |
+| 23 Mountain View St.   |            | Denver         | CO         | 80208    | 23 Mountain View St.   |            | Denver         | CO         | 80208    |
+| 7361 N. 41st St.       | Apt. B     | New York       | NY         | 10012    | 7361 N. 41st St.       | Apt. B     | New York       | NY         | 10012    |
+| 3829 Broadway Ave.     | Suite 2    | New York       | NY         | 10012    | 3829 Broadway Ave.     | Suite 2    | New York       | NY         | 10012    |
+| 2381 Buena Vista St.   |            | Los Angeles    | CA         | 90023    | 2381 Buena Vista St.   |            | Los Angeles    | CA         | 90023    |
+| 291 W. Hollywood Blvd. |            | Los Angeles    | CA         | 90024    | 291 W. Hollywood Blvd. |            | Los Angeles    | CA         | 90024    |
++------------------------+------------+----------------+------------+----------+------------------------+------------+----------------+------------+----------+
+12 rows in set (0.00 sec)
+
+--------------
+SELECT customer_id, last_name, first_name, bill_line1 FROM customer_address
+--------------
+
++-------------+-----------+------------+------------------------+
+| customer_id | last_name | first_name | bill_line1             |
++-------------+-----------+------------+------------------------+
+|       11119 | Sherwood  | Allan      | 1990 Westwood Blvd.    |
+|       11119 | Sherwood  | Allan      | 1990 Westwood Blvd.    |
+|       22229 | Zimmer    | Barry      | 16285 Wendell St.      |
+|       33339 | Brown     | Christine  | 19270 NW Cornell Rd.   |
+|       44449 | Goldstein | David      | 186 Vermont St.        |
+|       44449 | Goldstein | David      | 1374 46th Ave.         |
+|       55559 | Valentino | Erin       | 6982 Palm Ave.         |
+|       66669 | Wilson    | Frank Lee  | 23 Mountain View St.   |
+|       77779 | Hernandez | Gary       | 7361 N. 41st St.       |
+|       77779 | Hernandez | Gary       | 3829 Broadway Ave.     |
+|       88889 | Esway     | Heather    | 2381 Buena Vista St.   |
+|       88889 | Esway     | Heather    | 291 W. Hollywood Blvd. |
++-------------+-----------+------------+------------------------+
+12 rows in set (0.00 sec)
+
+--------------
+/* Query 2 */
+
+UPDATE customer_address
+SET ship_line1 = '1990 Westwood Blvd.' 
+WHERE customer_id = '11119'
+--------------
+
+Query OK, 0 rows affected (0.11 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
+
+--------------
+/* Query 3 */
+
+CREATE VIEW product_summary(product_id, order_count, order_total) AS 
+SELECT product_id , quantity, item_price - discount_amount              
+FROM orderitems
+--------------
+
+Query OK, 0 rows affected (0.05 sec)
+
+--------------
+SELECT * FROM product_summary
+--------------
+
++------------+-------------+-------------+
+| product_id | order_count | order_total |
++------------+-------------+-------------+
+|       2234 |           1 |      839.30 |
+|      10234 |           2 |       42.50 |
+|       4234 |           1 |      792.19 |
+|       3234 |           1 |     1208.16 |
+|       1234 |           1 |      799.13 |
+|       5234 |           1 |     1299.00 |
+|       2234 |           2 |      839.30 |
+|      13234 |           1 |       11.16 |
+|       5234 |           1 |     1299.00 |
+|       1234 |           1 |      799.13 |
+|       7234 |           1 |       70.02 |
+|       9234 |           1 |       10.79 |
+|      10234 |           1 |       42.50 |
+|       1234 |           1 |      799.13 |
+|      14234 |           1 |       40.00 |
+|      15234 |           1 |       22.10 |
+|      16234 |           1 |       96.00 |
+|      11234 |           1 |       15.96 |
+|       6234 |           1 |      863.54 |
+|      18234 |           1 |      160.99 |
+|      19234 |           1 |      425.81 |
++------------+-------------+-------------+
+21 rows in set (0.00 sec)
+
+--------------
+/* Query 4 */
+
+CREATE VIEW cheap_products AS
+SELECT * FROM product
+WHERE list_price < 50 WITH CHECK OPTION
+--------------
+
+Query OK, 0 rows affected (0.11 sec)
+
+--------------
+SELECT * FROM cheap_products
+--------------
+
++------------+-------------+--------------+---------------------------------+------------------------------------------+------------+------------------+---------------------+-----------+
+| product_id | category_id | product_code | product_name                    | description                              | list_price | discount_percent | date_added          | vendor_id |
++------------+-------------+--------------+---------------------------------+------------------------------------------+------------+------------------+---------------------+-----------+
+|       8234 |          21 | CD7689       | Pop 3                           | The best popular music                   |      49.99 |            25.00 | 2015-07-30 14:18:33 |         5 |
+|       9234 |          51 | video1234    | 2412: The Return                | Aliens return                            |      14.99 |            30.00 | 2015-07-30 12:46:40 |         5 |
+|      10234 |          51 | video4567    | Z Files                         | Series on mysterious activities          |      49.99 |            15.00 | 2015-07-30 13:14:15 |         3 |
+|      11234 |          41 | book9907     | Modern Science                  | A description of modern science          |      19.95 |            20.00 | 2014-10-30 09:32:40 |         5 |
+|      12234 |          41 | book6789     | Chemistry                       | Introduction to Chemistry                |      30.00 |            20.00 | 2013-10-30 09:32:40 |         5 |
+|      13234 |          31 | DVD12356     | Space Force 9                   | Adventures of heroes                     |      13.95 |            20.00 | 2012-10-30 10:32:50 |         9 |
+|      14234 |          31 | DVD6789      | From Another Planet             | Alien from another planet lands on Earth |      49.99 |            20.00 | 2012-10-30 10:34:30 |         9 |
+|      15234 |          31 | DVD8779      | Supernova                       | A star explodes                          |      25.99 |            15.00 | 2011-10-30 10:32:40 |         5 |
+|      17817 |          51 | bolk db      | Fundamentallof Database Systems | Fundamentalpof Database Systems Elmasri  |      47.99 |            21.00 | 2016-06-01 11:12:59 |         5 |
+|      17888 |          41 | book db      | Fundamental of Database Systems | Fundamental of Database Systems Elmasri  |      45.99 |            20.00 | 2015-06-01 11:12:59 |         2 |
++------------+-------------+--------------+---------------------------------+------------------------------------------+------------+------------------+---------------------+-----------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Query 5 */
+
+INSERT IGNORE INTO cheap_products (product_id, category_id, product_code,
+  product_name, list_price, description, discount_percent, date_added, vendor_id)
+VALUES('17888', '41' , 'book db' , 'Fundamental of Database Systems' , '45.99', 
+  'Fundamental of Database Systems Elmasri' , '20.00' , '2015-06-01 11:12:59' , '2')
+--------------
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Warning (Code 1062): Duplicate entry '17888' for key 'PRIMARY'
+--------------
+SELECT * FROM cheap_products
+--------------
+
++------------+-------------+--------------+---------------------------------+------------------------------------------+------------+------------------+---------------------+-----------+
+| product_id | category_id | product_code | product_name                    | description                              | list_price | discount_percent | date_added          | vendor_id |
++------------+-------------+--------------+---------------------------------+------------------------------------------+------------+------------------+---------------------+-----------+
+|       8234 |          21 | CD7689       | Pop 3                           | The best popular music                   |      49.99 |            25.00 | 2015-07-30 14:18:33 |         5 |
+|       9234 |          51 | video1234    | 2412: The Return                | Aliens return                            |      14.99 |            30.00 | 2015-07-30 12:46:40 |         5 |
+|      10234 |          51 | video4567    | Z Files                         | Series on mysterious activities          |      49.99 |            15.00 | 2015-07-30 13:14:15 |         3 |
+|      11234 |          41 | book9907     | Modern Science                  | A description of modern science          |      19.95 |            20.00 | 2014-10-30 09:32:40 |         5 |
+|      12234 |          41 | book6789     | Chemistry                       | Introduction to Chemistry                |      30.00 |            20.00 | 2013-10-30 09:32:40 |         5 |
+|      13234 |          31 | DVD12356     | Space Force 9                   | Adventures of heroes                     |      13.95 |            20.00 | 2012-10-30 10:32:50 |         9 |
+|      14234 |          31 | DVD6789      | From Another Planet             | Alien from another planet lands on Earth |      49.99 |            20.00 | 2012-10-30 10:34:30 |         9 |
+|      15234 |          31 | DVD8779      | Supernova                       | A star explodes                          |      25.99 |            15.00 | 2011-10-30 10:32:40 |         5 |
+|      17817 |          51 | bolk db      | Fundamentallof Database Systems | Fundamentalpof Database Systems Elmasri  |      47.99 |            21.00 | 2016-06-01 11:12:59 |         5 |
+|      17888 |          41 | book db      | Fundamental of Database Systems | Fundamental of Database Systems Elmasri  |      45.99 |            20.00 | 2015-06-01 11:12:59 |         2 |
++------------+-------------+--------------+---------------------------------+------------------------------------------+------------+------------------+---------------------+-----------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Query 6 */
+
+CREATE VIEW contact(first_name, phone_number) AS
+SELECT contact_fname, phone FROM vendor WITH CHECK OPTION
+--------------
+
+Query OK, 0 rows affected (0.47 sec)
+
+--------------
+SELECT * FROM contact
+--------------
+
++------------+--------------+
+| first_name | phone_number |
++------------+--------------+
+| Anne       | 206-325-6755 |
+| Ken        | 206-325-7866 |
+| Sally      | 206-325-8977 |
+| Andrew     | 425-746-5433 |
+| Denise     | 425-746-4322 |
+| Mark       | 206-325-9088 |
+| Denesha    | 425-635-7566 |
+| Chris      | 425-635-9788 |
+| Fred       | 415-422-2121 |
+| Patty      | 415-422-3232 |
++------------+--------------+
+10 rows in set (0.00 sec)
+
+--------------
+/* Query 7 */
+
+CREATE VIEW order_items AS
+SELECT o.order_id, o.order_date, o.tax_amount, o.ship_date, 
+  i.item_price, i.discount_amount, i.item_price - i.discount_amount AS item_total, p.product_name 
+FROM orders o, orderitems i, product p 
+WHERE o.order_id = i.order_id 
+AND i.product_id = p.product_id
+--------------
+
+Query OK, 0 rows affected (0.05 sec)
+
+--------------
+SELECT * FROM order_items
+--------------
+
++----------+---------------------+------------+---------------------+------------+-----------------+------------+------------------------+
+| order_id | order_date          | tax_amount | ship_date           | item_price | discount_amount | item_total | product_name           |
++----------+---------------------+------------+---------------------+------------+-----------------+------------+------------------------+
+|        1 | 2015-03-28 09:40:28 |      32.32 | 2015-03-30 15:32:51 |    1199.00 |          359.70 |     839.30 | Lenovo H50 Desktop     |
+|        1 | 2015-03-28 09:40:28 |      32.32 | 2015-03-30 15:32:51 |      49.99 |            7.49 |      42.50 | Z Files                |
+|        2 | 2015-03-28 11:23:20 |       0.00 | 2015-03-29 12:52:14 |     989.99 |          197.80 |     792.19 | Toshiba Satellite S55T |
+|        2 | 2015-03-28 11:23:20 |       0.00 | 2015-03-29 12:52:14 |      19.95 |            3.99 |      15.96 | Modern Science         |
+|        2 | 2015-03-28 11:23:20 |       0.00 | 2015-03-29 12:52:14 |    1415.00 |          551.46 |     863.54 | Dell Inspiron 17 5000  |
+|        3 | 2015-03-29 09:44:58 |      89.92 | 2015-03-31 09:11:41 |    2517.00 |         1308.84 |    1208.16 | HP Envy 750qe Desktop  |
+|        3 | 2015-03-29 09:44:58 |      89.92 | 2015-03-31 09:11:41 |     999.00 |          199.87 |     799.13 | Dell XPS 8700          |
+|        3 | 2015-03-29 09:44:58 |      89.92 | 2015-03-31 09:11:41 |    1299.00 |            0.00 |    1299.00 | HP Pavilion 15t Star   |
+|        4 | 2015-03-30 15:22:31 |       0.00 | 2015-04-03 16:32:21 |    1199.00 |          359.70 |     839.30 | Lenovo H50 Desktop     |
+|        4 | 2015-03-30 15:22:31 |       0.00 | 2015-04-03 16:32:21 |      13.95 |            2.79 |      11.16 | Space Force 9          |
+|        6 | 2015-03-31 18:37:22 |       0.00 | NULL                |    1299.00 |            0.00 |    1299.00 | HP Pavilion 15t Star   |
+|        7 | 2015-04-01 23:11:12 |       0.00 | 2015-04-03 10:21:35 |     999.00 |          199.87 |     799.13 | Dell XPS 8700          |
+|        7 | 2015-04-01 23:11:12 |       0.00 | 2015-04-03 10:21:35 |      99.99 |           29.97 |      70.02 | Classical Music        |
+|        7 | 2015-04-01 23:11:12 |       0.00 | 2015-04-03 10:21:35 |      14.99 |            4.20 |      10.79 | 2412: The Return       |
+|        7 | 2015-04-01 23:11:12 |       0.00 | 2015-04-03 10:21:35 |     500.99 |           75.18 |     425.81 | HP LaserJet Pro        |
+|        8 | 2015-04-02 11:26:38 |       0.00 | NULL                |      49.99 |            7.49 |      42.50 | Z Files                |
+|        9 | 2015-04-03 12:22:31 |       0.00 | NULL                |     999.00 |          199.87 |     799.13 | Dell XPS 8700          |
+|        9 | 2015-04-03 12:22:31 |       0.00 | NULL                |      49.99 |            9.99 |      40.00 | From Another Planet    |
+|       10 | 2015-05-03 12:22:31 |       0.00 | NULL                |      25.99 |            3.89 |      22.10 | Supernova              |
+|       10 | 2015-05-03 12:22:31 |       0.00 | NULL                |     120.00 |           24.00 |      96.00 | HP Color LaserJet      |
+|       11 | 2015-06-03 12:22:31 |       0.00 | NULL                |     200.99 |           40.00 |     160.99 | HP LaserJet Pro        |
++----------+---------------------+------------+---------------------+------------+-----------------+------------+------------------------+
+21 rows in set (0.02 sec)
+
+--------------
+/* Query 8 */
+
+CREATE VIEW reorder_info AS
+SELECT p.product_id, p.product_name, v.contact_fname, v.phone 
+FROM product p, vendor v 
+WHERE p.vendor_id = v.vendor_id
+--------------
+
+Query OK, 0 rows affected (0.09 sec)
+
+--------------
+SELECT * FROM reorder_info
+--------------
+
++------------+---------------------------------+---------------+--------------+
+| product_id | product_name                    | contact_fname | phone        |
++------------+---------------------------------+---------------+--------------+
+|       1234 | Dell XPS 8700                   | Ken           | 206-325-7866 |
+|       2234 | Lenovo H50 Desktop              | Ken           | 206-325-7866 |
+|       3234 | HP Envy 750qe Desktop           | Ken           | 206-325-7866 |
+|       4234 | Toshiba Satellite S55T          | Ken           | 206-325-7866 |
+|       5234 | HP Pavilion 15t Star            | Sally         | 206-325-8977 |
+|       6234 | Dell Inspiron 17 5000           | Ken           | 206-325-7866 |
+|       7234 | Classical Music                 | Sally         | 206-325-8977 |
+|       8234 | Pop 3                           | Denise        | 425-746-4322 |
+|       9234 | 2412: The Return                | Denise        | 425-746-4322 |
+|      10234 | Z Files                         | Sally         | 206-325-8977 |
+|      11234 | Modern Science                  | Denise        | 425-746-4322 |
+|      12234 | Chemistry                       | Denise        | 425-746-4322 |
+|      13234 | Space Force 9                   | Fred          | 415-422-2121 |
+|      14234 | From Another Planet             | Fred          | 415-422-2121 |
+|      15234 | Supernova                       | Denise        | 425-746-4322 |
+|      16234 | HP Color LaserJet               | Denise        | 425-746-4322 |
+|      17817 | Fundamentallof Database Systems | Denise        | 425-746-4322 |
+|      17888 | Fundamental of Database Systems | Ken           | 206-325-7866 |
+|      18234 | HP LaserJet Pro                 | Denise        | 425-746-4322 |
+|      19234 | HP LaserJet Pro                 | Denise        | 425-746-4322 |
++------------+---------------------------------+---------------+--------------+
+20 rows in set (0.00 sec)
+
+mysql> notee
